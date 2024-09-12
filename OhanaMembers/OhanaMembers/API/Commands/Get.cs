@@ -2,6 +2,11 @@
 {
     public class Get
     {
+        public class Command
+        {
+            public int Id { get; set; }
+        }
+
         public class Member 
         {
             public Member(int id, string name, int age, string gender)
@@ -18,9 +23,9 @@
             public string Gender { get; set; }
         }
 
-        public async Task<Member> Run(int id)
+        public async Task<Member> Run(Command command)
         {
-            return new Member(id, "Brandon", 37, "Male");
+            return new Member(command.Id, "Brandon", 37, "Male");
         }
     }
 }

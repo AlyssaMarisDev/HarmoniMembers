@@ -15,7 +15,8 @@ namespace OhanaMembers.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> Get(int id) => Ok(await new Get().Run(id));
+        [Route("{Id}")]
+        public async Task<IActionResult> Get([FromRoute] Get.Command command)
+            => Ok(await new Get().Run(command));
     }
 }
