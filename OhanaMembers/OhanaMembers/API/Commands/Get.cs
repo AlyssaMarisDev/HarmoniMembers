@@ -6,15 +6,15 @@ namespace OhanaMembers.API.Commands
 {
     public class Get
     {
-        public class Command
+        public class Parameters
         {
             public int Id { get; set; }
         }
 
-        public async Task<Member> Run(Command command)
+        public async Task<Member> Run(Parameters par)
         {
             var context = new MembersContext();
-            var member = await context.Members.Where(s => s.Id == command.Id).FirstOrDefaultAsync();
+            var member = await context.Members.Where(s => s.Id == par.Id).FirstOrDefaultAsync();
 
             if (member == null)
             {

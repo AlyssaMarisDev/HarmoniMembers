@@ -15,13 +15,18 @@ namespace OhanaMembers.API.Controllers
         }
 
         [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+            => Ok(await new GetAll().Run());
+
+        [HttpGet]
         [Route("{Id}")]
-        public async Task<IActionResult> Get([FromRoute] Get.Command command)
-            => Ok(await new Get().Run(command));
+        public async Task<IActionResult> Get([FromRoute] Get.Parameters par)
+            => Ok(await new Get().Run(par));
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Insert([FromBody] Insert.Command command)
-            => Ok(await new Insert().Run(command));
+        public async Task<IActionResult> Insert([FromBody] Insert.Parameters par)
+            => Ok(await new Insert().Run(par));
     }
 }

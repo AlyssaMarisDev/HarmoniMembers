@@ -5,16 +5,16 @@ namespace OhanaMembers.API.Commands
 {
     public class Insert
     {
-        public class Command
+        public class Parameters
         {
             public required string Name { get; set; }
             public required int Age { get; set; }
             public string Gender { get; set; } = "Enby";
         }
 
-        public async Task<Member> Run(Command command)
+        public async Task<Member> Run(Parameters par)
         {
-            var member = new Member { Name = command.Name, Age = command.Age, Gender = command.Gender };
+            var member = new Member { Name = par.Name, Age = par.Age, Gender = par.Gender };
             var context = new MembersContext();
 
             context.Members.Add(member);
