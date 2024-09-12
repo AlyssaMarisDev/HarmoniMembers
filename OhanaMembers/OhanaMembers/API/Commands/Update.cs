@@ -1,26 +1,32 @@
-﻿using OhanaMembers.API.Tools;
+﻿using OhanaMembers.DB.Models;
 using OhanaMembers.DB;
-using OhanaMembers.DB.Models;
+using Microsoft.EntityFrameworkCore;
+using OhanaMembers.API.Tools;
 
 namespace OhanaMembers.API.Commands
 {
-    public class Insert
+    public class Update
     {
         public class Parameters
         {
+            public required int Id { get; set; }
             public required string Name { get; set; }
             public required int Age { get; set; }
             public string Gender { get; set; } = "Enby";
         }
 
+
         public class Handler : IRequestHandler<Member, Parameters>
         {
             public async Task<Member> Run(Parameters par)
             {
-                var member = new Member { Name = par.Name, Age = par.Age, Gender = par.Gender };
                 var context = new MembersContext();
+                var member = await context.Members.FirstOrDefaultAsync(s => s.Id == par.Id) ?? throw new KeyNotFoundException();
 
-                context.Members.Add(member);
+                member.Name = par.Name;
+                member.Age = par.Age;
+                member.Gender = par.Gender;
+
                 await context.SaveChangesAsync();
 
                 return member;

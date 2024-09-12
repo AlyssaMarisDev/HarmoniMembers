@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OhanaMembers.API.Tools;
 using OhanaMembers.DB;
 using OhanaMembers.DB.Models;
 
@@ -11,17 +12,26 @@ namespace OhanaMembers.API.Commands
             public int Id { get; set; }
         }
 
-        public async Task<Member> Run(Parameters par)
+        public class Handler : IRequestHandler<Member, Parameters>
         {
-            var context = new MembersContext();
-            var member = await context.Members.Where(s => s.Id == par.Id).FirstOrDefaultAsync();
-
-            if (member == null)
+            public async Task<Member> Run(Parameters parameters)
             {
-                throw new KeyNotFoundException();
-            }
+                var context = new MembersContext();
+                var member = await context
+                    .Members
+                    .Where(s => s.Id == parameters.Id)
+                    .Select(s => new Member
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Age = s.Age,
+                        Gender = s.Gender,
+                    })
+                    .FirstOrDefaultAsync()
+                    ?? throw new KeyNotFoundException();
 
-            return member;
+                return member;
+            }
         }
     }
 }
