@@ -1,4 +1,8 @@
-﻿namespace OhanaMembers.API.Commands
+﻿using Microsoft.EntityFrameworkCore;
+using OhanaMembers.DB;
+using OhanaMembers.DB.Models;
+
+namespace OhanaMembers.API.Commands
 {
     public class Get
     {
@@ -7,25 +11,17 @@
             public int Id { get; set; }
         }
 
-        public class Member 
-        {
-            public Member(int id, string name, int age, string gender)
-            {
-                Id = id;
-                Name = name;
-                Age = age;
-                Gender = gender;
-            }
-
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public string Gender { get; set; }
-        }
-
         public async Task<Member> Run(Command command)
         {
-            return new Member(command.Id, "Brandon", 37, "Male");
+            var context = new MembersContext();
+            var member = await context.Members.Where(s => s.Id == command.Id).FirstOrDefaultAsync();
+
+            if (member == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return member;
         }
     }
 }

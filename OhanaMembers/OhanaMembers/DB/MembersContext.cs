@@ -3,7 +3,7 @@ using OhanaMembers.DB.Models;
 
 namespace OhanaMembers.DB
 {
-    public class BlogDataContext : DbContext
+    public class MembersContext : DbContext
     {
         static readonly string connectionString = "Server=localhost; User ID=root; Password=development; Database=OhanaMembers";
 

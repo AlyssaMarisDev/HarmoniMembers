@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OhanaMembers.DB;
 
@@ -10,12 +9,10 @@ using OhanaMembers.DB;
 
 namespace OhanaMembers.Migrations
 {
-    [DbContext(typeof(BlogDataContext))]
-    [Migration("20240912172104_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(MembersContext))]
+    partial class MembersContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

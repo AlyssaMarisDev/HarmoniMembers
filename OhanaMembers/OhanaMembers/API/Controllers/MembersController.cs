@@ -18,5 +18,10 @@ namespace OhanaMembers.API.Controllers
         [Route("{Id}")]
         public async Task<IActionResult> Get([FromRoute] Get.Command command)
             => Ok(await new Get().Run(command));
+
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Insert([FromBody] Insert.Command command)
+            => Ok(await new Insert().Run(command));
     }
 }
