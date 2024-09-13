@@ -1,13 +1,13 @@
 ﻿using OhanaMembers.DB.Models;
 using OhanaMembers.DB;
 using Microsoft.EntityFrameworkCore;
-using OhanaMembers.API.Tools;
+using MediatR;
 
 namespace OhanaMembers.API.Commands
 {
     public class Update
     {
-        public class Parameters
+        public class Request: IRequest<Member>
         {
             public required int Id { get; set; }
             public required string Name { get; set; }
@@ -15,19 +15,21 @@ namespace OhanaMembers.API.Commands
             public string Gender { get; set; } = "Enby";
         }
 
-
-        public class Handler : IRequestHandler<Member, Parameters>
+        public class Handler(ILogger<Handler> logger, MembersContext context) : IRequestHandler<Request, Member>
         {
-            public async Task<Member> Run(Parameters par)
+            private readonly ILogger<Handler> _logger = logger;
+            private readonly MembersContext _context = context;
+
+            public async Task<Member> Handle(Request request, CancellationToken cancellationToken)
             {
-                var context = new MembersContext();
-                var member = await context.Members.FirstOrDefaultAsync(s => s.Id == par.Id) ?? throw new KeyNotFoundException();
+                var member = await _context.Members.FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken: cancellationToken)
+                    ?? throw new KeyNotFoundException();
 
-                member.Name = par.Name;
-                member.Age = par.Age;
-                member.Gender = par.Gender;
+                member.Name = request.Name;
+                member.Age = request.Age;
+                member.Gender = request.Gender;
 
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
 
                 return member;
             }

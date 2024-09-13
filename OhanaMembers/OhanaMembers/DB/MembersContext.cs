@@ -13,6 +13,5 @@ namespace OhanaMembers.DB
         }
 
         public DbSet<Member> Members { get; set; }
-
     }
 }

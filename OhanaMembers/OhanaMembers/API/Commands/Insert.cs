@@ -1,4 +1,4 @@
-﻿using OhanaMembers.API.Tools;
+﻿using MediatR;
 using OhanaMembers.DB;
 using OhanaMembers.DB.Models;
 
@@ -6,22 +6,24 @@ namespace OhanaMembers.API.Commands
 {
     public class Insert
     {
-        public class Parameters
+        public class Request: IRequest<Member>
         {
             public required string Name { get; set; }
             public required int Age { get; set; }
             public string Gender { get; set; } = "Enby";
         }
 
-        public class Handler : IRequestHandler<Member, Parameters>
+        public class Handler(ILogger<Handler> logger, MembersContext context) : IRequestHandler<Request, Member>
         {
-            public async Task<Member> Run(Parameters par)
-            {
-                var member = new Member { Name = par.Name, Age = par.Age, Gender = par.Gender };
-                var context = new MembersContext();
+            private readonly ILogger<Handler> _logger = logger;
+            private readonly MembersContext _context = context;
 
-                context.Members.Add(member);
-                await context.SaveChangesAsync();
+            public async Task<Member> Handle(Request request, CancellationToken cancellationToken)
+            {
+                var member = new Member { Name = request.Name, Age = request.Age, Gender = request.Gender };
+
+                _context.Members.Add(member);
+                await _context.SaveChangesAsync(cancellationToken);
 
                 return member;
             }
