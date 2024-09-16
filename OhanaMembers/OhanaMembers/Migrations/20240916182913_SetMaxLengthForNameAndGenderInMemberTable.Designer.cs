@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OhanaMembers.DB;
 
@@ -10,9 +11,11 @@ using OhanaMembers.DB;
 namespace OhanaMembers.Migrations
 {
     [DbContext(typeof(MembersContext))]
-    partial class MembersContextModelSnapshot : ModelSnapshot
+    [Migration("20240916182913_SetMaxLengthForNameAndGenderInMemberTable")]
+    partial class SetMaxLengthForNameAndGenderInMemberTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
