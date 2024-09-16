@@ -22,13 +22,6 @@ namespace OhanaMembers.API.Commands
                 var member = await _context
                     .Members
                     .Where(s => s.Id == request.Id)
-                    .Select(s => new Member
-                    {
-                        Id = s.Id,
-                        Name = s.Name,
-                        Age = s.Age,
-                        Gender = s.Gender,
-                    })
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken)
                     ?? throw new KeyNotFoundException();
 

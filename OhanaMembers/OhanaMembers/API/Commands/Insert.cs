@@ -11,6 +11,8 @@ namespace OhanaMembers.API.Commands
             public required string Name { get; set; }
             public required int Age { get; set; }
             public string Gender { get; set; } = "Enby";
+            public required string Email { get; set; }
+            public required string Password { get; set; }
         }
 
         public class Handler(ILogger<Handler> logger, MembersContext context) : IRequestHandler<Request, Member>
@@ -20,7 +22,14 @@ namespace OhanaMembers.API.Commands
 
             public async Task<Member> Handle(Request request, CancellationToken cancellationToken)
             {
-                var member = new Member { Name = request.Name, Age = request.Age, Gender = request.Gender };
+                var member = new Member
+                {
+                    Name = request.Name,
+                    Age = request.Age,
+                    Gender = request.Gender,
+                    Email = request.Email,
+                    Password = request.Password
+                };
 
                 _context.Members.Add(member);
                 await _context.SaveChangesAsync(cancellationToken);
