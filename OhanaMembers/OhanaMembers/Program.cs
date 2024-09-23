@@ -1,4 +1,6 @@
-using OhanaMembers.API.Commands;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using OhanaMembers.DB;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,20 +12,30 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Mediatr
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+
+// Database
 builder.Services.AddDbContext<MembersContext>(ServiceLifetime.Transient);
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
+// Auth
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        options.DefaultModelsExpandDepth(-1);
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "https://localhost:4242/login",
+            ValidAudience = "ohana-user",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("thisisakeythatiskindofbigandgettingbiggerthanthat")),
+            ClockSkew = TimeSpan.Zero
+        };
     });
-}
+
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 

@@ -3,7 +3,7 @@ using OhanaMembers.DB;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 
-namespace OhanaMembers.API.Commands
+namespace OhanaMembers.API.Commands.Members
 {
     public class Update
     {

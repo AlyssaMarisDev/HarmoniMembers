@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OhanaMembers.DB;
 using OhanaMembers.DB.Models;
 
-namespace OhanaMembers.API.Commands
+namespace OhanaMembers.API.Commands.Members
 {
     public class GetAll
     {

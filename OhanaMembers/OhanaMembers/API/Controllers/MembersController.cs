@@ -1,4 +1,4 @@
-using OhanaMembers.API.Commands;
+using OhanaMembers.API.Commands.Members;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 
@@ -25,11 +25,6 @@ namespace OhanaMembers.API.Controllers
         [HttpGet]
         [Route("{Id}")]
         public async Task<IActionResult> Get([FromRoute] Get.Request request)
-            => Ok(await _mediator.Send(request));
-
-        [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> Insert([FromBody] Insert.Request request)
             => Ok(await _mediator.Send(request));
 
         [HttpPut]
